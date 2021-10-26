@@ -1,6 +1,6 @@
 /*
-Covid 19 Data Exploration 
-Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Creating Views, Converting Data Types
+Covid-19 Data Exploration 
+Skills used: Joins, CTE's, Temp Tables, Windows Functions, Aggregate Functions, Converting Data Types
 */
 
 Select *
@@ -145,17 +145,3 @@ Select *, (RollingPeopleVaccinated/Population)*100
 From #PercentPopulationVaccinated
 
 
-
-
--- Creating View to store data for later visualizations
-
-Create View PercentPopulationVaccinated
-as
-Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
-, SUM(CONVERT(int,vac.new_vaccinations)) OVER (Partition by dea.Location Order by dea.location, dea.Date) as RollingPeopleVaccinated
---, (RollingPeopleVaccinated/population)*100
-From Covid..CovidDeaths$ dea
-Join Covid..CovidVaccinations$ vac
-	On dea.location = vac.location
-	and dea.date = vac.date
-where dea.continent is not null 
